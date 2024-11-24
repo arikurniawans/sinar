@@ -1,3 +1,8 @@
+@php
+    header("Content-type: application/vnd-ms-excel");
+    header("Content-Disposition: attachment; filename=data-penghuni-wisma.xls");
+@endphp
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -18,6 +23,8 @@
 
         th {
             background-color: #f2f2f2; /* Menambahkan warna latar belakang pada header */
+            font-weight: bold;
+            text-align: center; /* Ensure headers are centered */
         }
     </style>
 </head>
@@ -107,7 +114,7 @@
                 @endif
             </td>
             <td>TGL. UPDATE:</td>
-            <td colspan="3" class="no-border"></td>
+            <td colspan="3" class="no-border">{{ date('Y-m-d') }}</td>
         </tr>
     </table>
 
@@ -147,15 +154,27 @@
             <th colspan="11">JM. ANAK TERDAFTAR: {{ $clients->count() }}</th>
         </tr>
         <tr>
-            <th>No</th>
-            <th>No Induk</th>
-            <th>Masuk Tahun</th>
-            <th>Nama Klien</th>
-            <th>Tanggal Lahir</th>
-            <th>Sekolah</th>
-            <th>Kelas</th>
-            <th>Kode Keuang</th>
-            <th>Keterangan</th>
+            <th rowspan="2">No</th>
+            <th rowspan="2">No Induk</th>
+            <th rowspan="2">Masuk Tahun</th>
+            <th rowspan="2">Penghuni Wisma</th>
+            <th colspan="4">Lahir</th>
+            <th rowspan="2">Sekolah</th>
+            <th rowspan="2">Kelas</th>
+            <th rowspan="2">Tingkat Per</th>
+            <th rowspan="2">Kode Keuang</th>
+            <th colspan="2">Tanggal Pemeriksaan</th>
+            <th rowspan="2">Kasus</th>
+            <th rowspan="2">Kode Kasus</th>
+            <th rowspan="2">KETERANGAN</th>
+        </tr>
+        <tr>
+            <th>TGL</th>
+            <th>BLN</th>
+            <th>THN</th>
+            <th>Umur</th>
+            <th>Tanggal Pemeriksaan 1</th>
+            <th>Tanggal Pemeriksaan 2</th>
         </tr>
         @php $no=1; @endphp
         @foreach ($clients as $dclients)
@@ -164,10 +183,18 @@
                 <td>{{$dclients->no_induk}}</td>
                 <td>{{$dclients->tahun_masuk}}</td>
                 <td>No.KK: {{ $dclients->no_kk }}<br/>No. NIK: {{ $dclients->no_nik }}<br/>Nama Lengkap: {{ $dclients->nama_klien }}</td>
-                <td>{{$dclients->tgl_lahir}}</td>
+                <td>{{ \Carbon\Carbon::parse($dclients->tgl_lahir)->day }}</td>
+                <td>{{ \Carbon\Carbon::parse($dclients->tgl_lahir)->month }}</td>
+                <td>{{ \Carbon\Carbon::parse($dclients->tgl_lahir)->year }}</td>
+                <td>{{$dclients->umur}}</td>
                 <td>{{$dclients->sekolah}}</td>
                 <td>{{$dclients->kelas}}</td>
+                <td>{{$dclients->tingkat_per}}</td>
                 <td>{{$dclients->kode_keuangan}}</td>
+                <td>BB 1: {{$dclients->bb_1}}<br/>TB 1: {{$dclients->tb_1}}</td>
+                <td>BB 2: {{$dclients->bb_2}}<br/>TB 2: {{$dclients->tb_2}}</td>
+                <td>{{$dclients->namakasus}}</td>
+                <td>{{$dclients->kode}}</td>
                 <td>{{$dclients->keterangan}}</td>
             </tr>
         @endforeach

@@ -462,7 +462,13 @@ class MasterWismaController extends Controller
                 ->orderBy('data_klien_wisma.id_klienwisma', 'desc')
                 ->get();
 
-            return Excel::download(new WismaExport($tenaga, $clients), 'wisma.xlsx');
+                $data = [
+                    'tenaga' => $tenaga,
+                    'clients' => $clients
+                ];
+
+            // return Excel::download(new WismaExport($tenaga, $clients), 'wisma.xlsx');
+            return view('exports.wisma',$data);
         }
 
 }
